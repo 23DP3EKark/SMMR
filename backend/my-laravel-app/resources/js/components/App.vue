@@ -1,12 +1,15 @@
 <style>
-
+    body {
+        margin: 0;
+        padding: 0;
+    }
 </style>
 
 <template>
     <div>
-        <Header />
+        <Header v-if="isLoggedIn" />
 
-        <h1>Welcome to Laravel 12 with Vue 3</h1>
+        
 
         <router-view></router-view>
     </div>
@@ -14,4 +17,16 @@
 
 <script>
     import Header from './Header.vue';
+
+    export default {
+        computed: {
+            isLoggedIn() {
+                return localStorage.getItem('user');
+            }
+        },
+
+        components: {
+            Header
+        }
+    }
 </script>
