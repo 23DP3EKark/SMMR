@@ -4,10 +4,11 @@ import Register from '../components/Register.vue';
 import Login from '../components/Login.vue';
 
 const routes = [
-    { path: '/', redirect: '/register' },
+    { path: '/', component: Login },
     { path: '/register', component: Register },
     { path: '/login', component: Login },
     { path: '/home', component: Home, meta: { requiresAuth: true } },
+    { path: '/:pathMatch(.*)*', redirect: '/login' },
 ];
 
 const router = createRouter({

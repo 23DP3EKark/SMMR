@@ -1,160 +1,57 @@
 <style scoped>
-@keyframes pulse-red {
-  0% {
-    box-shadow: 0 0 0 0 rgba(157, 2, 8, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 8px 4px rgba(228, 0, 8, 0.3);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(157, 2, 8, 0.2);
-  }
-}
 
-form {
-    max-width: 400px;
-    padding: 24px;
-    margin: 40px auto;
-    background-color: white;
-    border: 1px solid #DADADA;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    align-items: center;
-}
-
-form label {
-    color: #555555;
-    display: block;
-    margin-bottom: 5px;
-    font-family: 'nunito', sans-serif;
-}
-
-form .input-group {
-    margin-bottom: 15px;
-}
-
-form input {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 15px;
-    border: 1px solid #DADADA;
-    border-radius: 3px;
-    box-sizing: border-box;
-    font-family: 'nunito', sans-serif;
-    font-size: 14px;
-}
-
-form input:focus {
-    border-color: linear-gradient(to bottom, #9D0208, #D00000);
-    animation: pulse-red 1.5s infinite;
-    outline: none;
-}
-form #registration-title {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #222222;
-    font-family: 'playfair display', serif;
-    font-weight: 400;
-}
-
-form .terms {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 20px;
-    font-family: 'nunito', sans-serif;
-    font-size: 14px;
-    color: #555555;
-}
-
-form .terms input {
-    width: auto;
-    margin: 3px 0 0;
-}
-
-form .terms label {
-    margin-bottom: 0;
-}
-
-form .registration-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-form button {
-    flex: 1;
-    padding: 10px 14px;
-    border: none;
-    border-radius: 3px;
-    background-color: #1f6f5f;
-    color: white;
-    font-family: 'nunito', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-form button[type="cancel"] {
-    background-color: #888888;
-}
-
-form .login-link {
-    text-align: center;
-    font-family: 'nunito', sans-serif;
-    font-size: 14px;
-    color: #555555;
-}
-
-form .login-link p {
-    margin: 0;
-}
-
-form .login-link a {
-    color: #1f6f5f;
-    text-decoration: none;
-}
-
-form .login-link a:hover {
-    text-decoration: underline;
-}
 </style>
 
 <template>
 
-    <form action="registration">
-        <h1 id="registration-title">Reģistrācija</h1>
+    <div class="flex min-h-screen items-center justify-center bg-[#008080] px-4">
+      <form action="login" class="w-full max-w-sm border-2 border-t-white border-r-black border-b-black border-l-white bg-[#c0c0c0] p-2">
 
-        <div class="input-group">
-            <label for="name">Vārds:</label>
-            <input type="text" id="name" name="name" required>
+        <h1 class="bg-[#000080] px-2 py-1 text-sm font-bold text-white">Reģistrācija</h1>
 
-            <label for="last-name">Uzvārds:</label>
-            <input type="text" id="last-name" name="last-name" required>
+        <div class="flex flex-col gap-3 p-3 text-sm">
+          <div>
+            <label for="first_name" class="mb-1 block">vārds:</label>
+            <input type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" />
+          </div>
 
-            <label for="email">E-pasts:</label>
-            <input type="email" id="email" name="email" required>
+          <div>
+            <label for="last_name" class="mb-1 block">uzvārds:</label>
+            <input type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" />
+          </div>
 
-            <label for="password">Parole:</label>
-            <input type="password" id="password" name="password" required>
+          <div>
+            <label for="email" class="mb-1 block">epasts:</label>
+            <input type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" />
+          </div>
 
-            <label for="password_confirmation">Atkārtota parole:</label>
-            <input type="password" id="password-confirmation" name="password-confirmation" required>
+          <div>
+            <label for="password" class="mb-1 block">parole:</label>
+            <input type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" />
+          </div>
+
+
+          <div>
+            <label for="password" class="mb-1 block">atkārtota parole:</label>
+            <input type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" />
+          </div>
+
+          <div class="flex items-center gap-1">
+            <input type="checkbox" class="mr-2" />
+            <label for="terms" class="text-xs">Es piekrītu </label>
+            <a href="#" class="text-blue-900 underline text-xs">noteikumiem un nosacījumiem.</a>
+          </div>
+
+
+            <button class="border-2 border-t-white border-r-black border-b-black border-l-white bg-[#c0c0c0] px-3 py-1 active:border-t-black active:border-r-white active:border-b-white active:border-l-black">Pierakstīties</button>
+
+          <div class="text-xs">
+            <p>Jau esat reģistrējies?</p>
+            <a href="/login" class="text-blue-900 underline">Pierakstīties.</a>
+          </div>
         </div>
-
-        <div class="terms">
-            <input type="checkbox" id="terms" name="terms" required>
-            <label for="terms">Es piekrītu noteikumiem un nosacījumiem</label>
-        </div>
-
-        <div class="registration-buttons">
-            <button type="submit">Reģistrēties</button>
-            <button type="cancel">Atcelt</button>
-        </div>
-
-        <div class="login-link">
-            <p>Jau ir konts? <a href="/login">Pieslēgties</a></p>
-        </div>
-    </form>
+      </form>
+    </div>
 
 </template>
 
