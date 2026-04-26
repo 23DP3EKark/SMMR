@@ -10,12 +10,12 @@
       <div class="flex flex-col gap-3 p-3 text-sm">
         <div>
           <label for="email" class="mb-1 block">Epasts:</label>
-          <input v-model="form.email" type="email" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" required />
+          <input v-model="form.email" type="email" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
         </div>
 
         <div>
           <label for="password" class="mb-1 block">Parole:</label>
-          <input v-model="form.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-[2px] outline-none" required />
+          <input v-model="form.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
         </div>
 
         <button class="border-2 border-t-white border-r-black border-b-black border-l-white bg-[#c0c0c0] px-3 py-1 active:border-t-black active:border-r-white active:border-b-white active:border-l-black">
@@ -37,6 +37,9 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const form = ref({
   email: '',
@@ -52,7 +55,12 @@ const login = async () => {
 
   try {
     const response = await axios.post('/api/login', form.value);
-    successMessage.value = response.data.message;
+
+    successMessage.value = response.data.message ?? 'Login successful.';
+
+    localStorage.setItem('user', JSON.stringify(response.data.user));
+
+    router.push('/desktop');
   } catch (error) {
     errorMessage.value = error.response?.data?.message ?? 'Login failed.';
   }

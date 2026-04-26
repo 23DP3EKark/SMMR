@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../components/Home.vue';
+import Desktop from '../components/desktop.vue';
 import Register from '../components/Register.vue';
 import Login from '../components/Login.vue';
 
@@ -7,7 +7,7 @@ const routes = [
     { path: '/', component: Login },
     { path: '/register', component: Register },
     { path: '/login', component: Login },
-    { path: '/home', component: Home, meta: { requiresAuth: true } },
+    { path: '/desktop', component: Desktop, meta: { requiresAuth: true } },
     { path: '/:pathMatch(.*)*', redirect: '/login' },
 ];
 
