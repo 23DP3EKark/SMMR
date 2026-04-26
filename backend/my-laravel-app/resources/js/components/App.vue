@@ -20,6 +20,11 @@
             color: white;
         }
 
+        .pixelify-font-header {
+            font-family: 'Pixelify Sans', sans-serif;
+            font-weight: 700;
+        }
+
         .win-window {
             background-color: #c0c0c0;
             border: 2px solid;
