@@ -18,6 +18,11 @@
           <input v-model="form.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
         </div>
 
+        <label class="flex items-center gap-2">
+          <input v-model="form.remember" type="checkbox" />
+          Remember me
+        </label>
+
         <button class="border-2 border-t-white border-r-black border-b-black border-l-white bg-[#c0c0c0] px-3 py-1 active:border-t-black active:border-r-white active:border-b-white active:border-l-black">
           Pierakstīties
         </button>
@@ -44,6 +49,7 @@ const router = useRouter();
 const form = ref({
   email: '',
   password: '',
+  remember: false,
 });
 
 const successMessage = ref('');
@@ -54,11 +60,9 @@ const login = async () => {
   errorMessage.value = '';
 
   try {
-    const response = await axios.post('/api/login', form.value);
+    const response = await axios.post('/login', form.value);
 
     successMessage.value = response.data.message ?? 'Login successful.';
-
-    localStorage.setItem('user', JSON.stringify(response.data.user));
 
     router.push('/desktop');
   } catch (error) {

@@ -18,13 +18,16 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('user');
+router.beforeEach(async (to, from, next) => {
+  if (!to.meta.requiresAuth) {
+    return next();
+  }
 
-  if (to.meta.requiresAuth && !isLoggedIn) {
-    next('/login');
-  } else {
+  try {
+    await window.axios.get('/me');
     next();
+  } catch {
+    next('/login');
   }
 });
 

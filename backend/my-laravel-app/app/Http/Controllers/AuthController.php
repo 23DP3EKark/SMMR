@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -37,19 +38,45 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
+            'remember' => ['nullable', 'boolean'],
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
-
-        if (! $user || ! Hash::check($validated['password'], $user->password)) {
+        if (! Auth::attempt([
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+        ], $validated['remember'] ?? false)) {
             return response()->json([
                 'message' => 'Invalid email or password.',
             ], 422);
         }
 
+        $request->session()->regenerate();
+
         return response()->json([
             'message' => 'Login successful.',
-            'user' => $user,
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function me(Request $request): JsonResponse {
+        if (! Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        return response()->json([
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function logout(Request $request): JsonResponse {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'message' => 'Logged out.',
         ]);
     }
 }
