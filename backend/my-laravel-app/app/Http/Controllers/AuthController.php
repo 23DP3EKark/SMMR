@@ -79,4 +79,59 @@ class AuthController extends Controller
             'message' => 'Logged out.',
         ]);
     }
+
+    public function changePassword(Request $request): JsonResponse {
+        if (! Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = Auth::user();
+
+        if (! Hash::check($validated['current_password'], $user->password)) {
+            return response()->json([
+                'message' => 'Current password is incorrect.',
+            ], 422);
+        }
+
+        $user->update([
+            'password' => $validated['password'],
+        ]);
+
+        return response()->json([
+            'message' => 'Password changed successfully.',
+        ]);
+    }
+
+    public function deleteAccount(Request $request): JsonResponse {
+        if (! Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        $request->validate([
+            'verification_code' => ['required', 'string'],
+            'verification_input' => ['required', 'string', 'same:verification_code'],
+        ]);
+
+        $user = Auth::user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'message' => 'Account deleted successfully.',
+        ]);
+    }
 }

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/me', [AuthController::class, 'me']);
 Route::post('/logout', [AuthController::class, 'logout']);
+Route::put('/password', [AuthController::class, 'changePassword']);
+Route::delete('/account', [AuthController::class, 'deleteAccount']);
 
 Route::get('/{any}', function () {
     return view('app');
