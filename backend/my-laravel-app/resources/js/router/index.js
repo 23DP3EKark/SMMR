@@ -5,6 +5,7 @@ import DesktopWindow from '../components/DesktopWindow.vue';
 import Register from '../components/Register.vue';
 import Login from '../components/Login.vue';
 import Settings from '../components/Settings.vue';
+import Todo from '../components/todo.vue';
 
 const routes = [
     { path: '/', component: Login },
@@ -16,7 +17,7 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
             { path: '', component: Desktop },
-            { path: 'todo', component: DesktopWindow, meta: { title: 'To-do' } },
+            { path: 'todo', component: Todo, meta: { title: 'To-do' } },
             { path: 'travel', component: DesktopWindow, meta: { title: 'Celojumi' } },
             { path: 'music', component: DesktopWindow, meta: { title: 'Muzika' } },
             { path: 'movies', component: DesktopWindow, meta: { title: 'Filmas' } },
