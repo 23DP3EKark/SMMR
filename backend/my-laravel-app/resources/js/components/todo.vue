@@ -32,11 +32,66 @@
                         Uzdevumi:
                     </h1>
 
-                    <p v-if="!loading && todoItems.length === 0">
+                    <div class="grid gap-2 md:grid-cols-4">
+                        <div class="border-2 border-t-black border-r-white border-b-white border-l-black bg-white p-2">
+                            <p class="text-xs">Kopa</p>
+                            <p class="font-bold">{{ todoStats.total }}</p>
+                        </div>
+
+                        <div class="border-2 border-t-black border-r-white border-b-white border-l-black bg-white p-2">
+                            <p class="text-xs">Aktivi</p>
+                            <p class="font-bold">{{ todoStats.active }}</p>
+                        </div>
+
+                        <div class="border-2 border-t-black border-r-white border-b-white border-l-black bg-white p-2">
+                            <p class="text-xs">Pabeigti</p>
+                            <p class="font-bold">{{ todoStats.completed }}</p>
+                        </div>
+
+                        <div class="border-2 border-t-black border-r-white border-b-white border-l-black bg-white p-2">
+                            <p class="text-xs">Progress</p>
+                            <p class="font-bold">{{ todoStats.percent }}%</p>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-2 md:grid-cols-4">
+                        <div>
+                            <label for="todo-search">Meklet:</label>
+                            <input id="todo-search" v-model="searchTerm" type="search" maxlength="100" class="win-input w-full">
+                        </div>
+
+                        <div>
+                            <label for="todo-status">Statuss:</label>
+                            <select id="todo-status" v-model="statusFilter" class="win-input w-full">
+                                <option value="all">Visi</option>
+                                <option value="active">Aktivi</option>
+                                <option value="completed">Pabeigti</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="todo-sort">Kartot:</label>
+                            <select id="todo-sort" v-model="sortBy" class="win-input w-full">
+                                <option value="created_at">Izveides datums</option>
+                                <option value="title">Nosaukums</option>
+                                <option value="status">Statuss</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="todo-sort-direction">Seciba:</label>
+                            <select id="todo-sort-direction" v-model="sortDirection" class="win-input w-full">
+                                <option value="desc">Dilstosa</option>
+                                <option value="asc">Augosa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <p v-if="!loading && filteredTodoItems.length === 0">
                         Nav uzdevumu.
                     </p>
 
-                    <div v-for="todoItem in todoItems" :key="todoItem.id" class="border-2 border-t-white border-r-black border-b-black border-l-white bg-[#c0c0c0] p-2">
+                    <div v-for="todoItem in filteredTodoItems" :key="todoItem.id" class="border-2 border-t-white border-r-black border-b-black border-l-white bg-[#c0c0c0] p-2">
                         <div v-if="editingTodoId === todoItem.id" class="flex flex-col gap-2">
                             <div>
                                 <label :for="`edit_title_${todoItem.id}`">Nosaukums:</label>
@@ -93,7 +148,7 @@
 
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const todoItems = ref([]);
 const loading = ref(true);
@@ -106,6 +161,57 @@ const description = ref('');
 const editingTodoId = ref(null);
 const editTitle = ref('');
 const editDescription = ref('');
+const searchTerm = ref('');
+const statusFilter = ref('all');
+const sortBy = ref('created_at');
+const sortDirection = ref('desc');
+
+const todoStats = computed(() => {
+    const total = todoItems.value.length;
+    const completed = todoItems.value.filter((todoItem) => todoItem.is_completed).length;
+    const active = total - completed;
+    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    return {
+        total,
+        completed,
+        active,
+        percent,
+    };
+});
+
+const filteredTodoItems = computed(() => {
+    const search = searchTerm.value.trim().toLowerCase();
+    const direction = sortDirection.value === 'desc' ? -1 : 1;
+
+    return todoItems.value
+        .filter((todoItem) => {
+            if (statusFilter.value === 'active' && todoItem.is_completed) {
+                return false;
+            }
+
+            if (statusFilter.value === 'completed' && !todoItem.is_completed) {
+                return false;
+            }
+
+            if (search === '') {
+                return true;
+            }
+
+            return `${todoItem.title} ${todoItem.description ?? ''}`.toLowerCase().includes(search);
+        })
+        .sort((a, b) => {
+            if (sortBy.value === 'title') {
+                return a.title.localeCompare(b.title) * direction;
+            }
+
+            if (sortBy.value === 'status') {
+                return (Number(a.is_completed) - Number(b.is_completed)) * direction;
+            }
+
+            return (new Date(a.created_at) - new Date(b.created_at)) * direction;
+        });
+});
 
 const loadTodoItems = async () => {
     loading.value = true;

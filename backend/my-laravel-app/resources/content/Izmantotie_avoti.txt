@@ -1,0 +1,5 @@
+Learn Vue.js - Tutorial for Beginners - https://www.youtube.com/watch?v=Kt2E8nblvXU&t=5014s
+Tailwind CSS v4 Full Course 2025 | Master Tailwind in One Hour - https://www.youtube.com/watch?v=6biMWgD6_JY&t=2269s
+Tailwind css dokumentacija - https://tailwindcss.com/docs/installation/using-vite
+Vue.js dokumentacija - https://vuejs.org/guide/introduction.html
+Uzdevu maksligajam intelektam jautajumus ar merki macities no tiem - https://chatgpt.com/

@@ -24,7 +24,7 @@
                 <div v-if="user" class="flex flex-col gap-3">
                     <div>
                         <strong>Name: </strong>
-                        <span>{{ user.name }}</span>
+                        <span>{{ user.first_name }}</span>
                     </div>
 
                     <div>

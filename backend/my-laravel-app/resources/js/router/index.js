@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import DesktopLayout from '../components/DesktopLayout.vue';
 import Desktop from '../components/desktop.vue';
-import DesktopWindow from '../components/DesktopWindow.vue';
 import Register from '../components/Register.vue';
 import Login from '../components/Login.vue';
 import Settings from '../components/Settings.vue';
 import Todo from '../components/todo.vue';
+import Music from '../components/Music.vue';
+import Movies from '../components/Movies.vue';
+import Travel from '../components/Travel.vue';
+import ReadmeFile from '../components/ReadmeFile.vue';
+import SourcesFile from '../components/SourcesFile.vue';
 
 const routes = [
     { path: '/', component: Login },
@@ -18,12 +22,11 @@ const routes = [
         children: [
             { path: '', component: Desktop },
             { path: 'todo', component: Todo, meta: { title: 'To-do' } },
-            { path: 'travel', component: DesktopWindow, meta: { title: 'Celojumi' } },
-            { path: 'music', component: DesktopWindow, meta: { title: 'Muzika' } },
-            { path: 'movies', component: DesktopWindow, meta: { title: 'Filmas' } },
-            { path: 'readme', component: DesktopWindow, meta: { title: 'README.md' } },
-            { path: 'sources', component: DesktopWindow, meta: { title: 'Izmantotie_avoti.txt' } },
-            { path: 'surprise', component: DesktopWindow, meta: { title: 'Parsteigums.exe' } },
+            { path: 'travel', component: Travel, meta: { title: 'Celojumi' } },
+            { path: 'music', component: Music, meta: { title: 'Muzika' } },
+            { path: 'movies', component: Movies, meta: { title: 'Filmas' } },
+            { path: 'readme', component: ReadmeFile, meta: { title: 'README.md' } },
+            { path: 'sources', component: SourcesFile, meta: { title: 'Izmantotie_avoti.txt' } },
             { path: 'settings', component: Settings }
         ],
     },

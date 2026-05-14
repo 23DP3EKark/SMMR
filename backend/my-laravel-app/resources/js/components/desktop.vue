@@ -37,11 +37,6 @@
           <img class="icon-drop-shadow" src="/resources/images/Folder-Icon-PNG.png" alt="">
           <span class="text-shadow">Izmantotie_avoti.txt</span>
         </router-link>
-
-        <router-link to="/desktop/surprise" class="desktop-icon">
-          <img class="icon-drop-shadow" src="/resources/images/Folder-Icon-PNG.png" alt="">
-          <span class="text-shadow">Parsteigums.exe</span>
-        </router-link>
       </div>
     </div>
 

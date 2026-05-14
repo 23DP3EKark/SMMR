@@ -21,10 +21,10 @@ class AuthController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $validated['first_name'],
+            'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password_hash' => $validated['password'],
         ]);
 
         return response()->json([
@@ -94,14 +94,14 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        if (! Hash::check($validated['current_password'], $user->password)) {
+        if (! Hash::check($validated['current_password'], $user->password_hash)) {
             return response()->json([
                 'message' => 'Current password is incorrect.',
             ], 422);
         }
 
         $user->update([
-            'password' => $validated['password'],
+            'password_hash' => $validated['password'],
         ]);
 
         return response()->json([

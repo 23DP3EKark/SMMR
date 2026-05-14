@@ -20,10 +20,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
         'last_name',
         'email',
-        'password',
+        'password_hash',
     ];
 
     /**
@@ -32,7 +32,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
+        'password_hash',
         'remember_token',
     ];
 
@@ -45,8 +45,13 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password_hash' => 'hashed',
         ];
+    }
+
+    public function getAuthPassword(): string
+    {
+        return $this->password_hash;
     }
 
     public function todoItems(): HasMany
