@@ -12,7 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->validateCsrfTokens(except: [
+            'login',
+            'logout',
+            'password',
+            'account',
+            'todo-items',
+            'todo-items/*',
+            'itunes/search',
+            'travel/destinations',
+            'api/register',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
