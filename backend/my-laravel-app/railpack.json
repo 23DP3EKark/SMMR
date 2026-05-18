@@ -1,18 +1,7 @@
 {
   "$schema": "https://schema.railpack.com",
-<<<<<<< HEAD
-  "provider": "php",
-  "packages": {
-    "php": "8.3",
-    "node": "22"
-  },
   "buildAptPackages": [
     "bison",
     "re2c"
   ]
-=======
-  "packages": {
-    "php": "8.4"
-  }
->>>>>>> c3147cea03dd028708f2bea926e57173b42fd0b8
 }
