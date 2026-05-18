@@ -1,0 +1,10 @@
+node_modules/
+dist/
+
+frontend/node_modules/
+frontend/dist/
+
+backend/my-laravel-app/node_modules/
+backend/my-laravel-app/vendor/
+backend/my-laravel-app/public/build/
+backend/my-laravel-app/.env
