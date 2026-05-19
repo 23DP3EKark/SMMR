@@ -88,6 +88,18 @@ module.exports = async function handler(req, res) {
       res.setHeader('Content-Type', contentType);
     }
 
+    // Important: forward Laravel session cookies from Railway to the browser
+    const setCookies =
+      typeof response.headers.getSetCookie === 'function'
+        ? response.headers.getSetCookie()
+        : response.headers.get('set-cookie')
+          ? [response.headers.get('set-cookie')]
+          : [];
+
+    if (setCookies.length > 0) {
+      res.setHeader('Set-Cookie', setCookies);
+    }
+
     const responseBody = Buffer.from(await response.arrayBuffer());
     res.status(response.status).send(responseBody);
   } catch (error) {
