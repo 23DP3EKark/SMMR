@@ -22,7 +22,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'todo-items/*',
             'itunes/search',
             'travel/destinations',
+            'api/login',
             'api/register',
+            'api/logout',
+            'api/password',
+            'api/account',
+            'api/todo-items',
+            'api/todo-items/*',
+            'api/itunes/search',
+            'api/travel/destinations',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
