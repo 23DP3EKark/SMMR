@@ -12,32 +12,32 @@
         <div class="flex flex-col gap-3 p-3 text-sm">
           <div>
             <label for="first_name" class="mb-1 block">vārds:</label>
-            <input v-model="user.first_name" type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+            <input id="first_name" v-model="user.first_name" type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
           </div>
 
           <div>
             <label for="last_name" class="mb-1 block">uzvārds:</label>
-            <input v-model="user.last_name" type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+            <input id="last_name" v-model="user.last_name" type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
           </div>
 
           <div>
-            <label for="email" class="mb-1 block">epasts:</label>
-            <input v-model="user.email" type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+            <label for="register_email" class="mb-1 block">epasts:</label>
+            <input id="register_email" v-model="user.email" type="text" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
           </div>
 
           <div>
-            <label for="password" class="mb-1 block">parole:</label>
-            <input v-model="user.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+            <label for="register_password" class="mb-1 block">parole:</label>
+            <input id="register_password" v-model="user.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
           </div>
 
 
           <div>
-            <label for="password" class="mb-1 block">atkārtota parole:</label>
-            <input v-model="user.password_confirmation" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+            <label for="password_confirmation" class="mb-1 block">atkārtota parole:</label>
+            <input id="password_confirmation" v-model="user.password_confirmation" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
           </div>
 
           <div class="flex items-center gap-1">
-            <input v-model="user.terms" type="checkbox" class="mr-2" required />
+            <input id="terms" v-model="user.terms" type="checkbox" class="mr-2" required />
             <label for="terms" class="text-xs">Es piekrītu </label>
             <a href="#" class="text-blue-900 underline text-xs">noteikumiem un nosacījumiem.</a>
           </div>

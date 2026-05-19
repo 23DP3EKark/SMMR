@@ -9,13 +9,13 @@
 
       <div class="flex flex-col gap-3 p-3 text-sm">
         <div>
-          <label for="email" class="mb-1 block">Epasts:</label>
-          <input v-model="form.email" type="email" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+          <label for="login_email" class="mb-1 block">Epasts:</label>
+          <input id="login_email" v-model="form.email" type="email" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
         </div>
 
         <div>
-          <label for="password" class="mb-1 block">Parole:</label>
-          <input v-model="form.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
+          <label for="login_password" class="mb-1 block">Parole:</label>
+          <input id="login_password" v-model="form.password" type="password" class="w-full border-2 border-t-black border-r-white border-b-white border-l-black bg-white px-1 py-0.5 outline-none" required />
         </div>
 
         <label class="flex items-center gap-2">
