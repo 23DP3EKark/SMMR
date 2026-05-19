@@ -1,4 +1,5 @@
 module.exports = async function handler(req, res) {
+  res.setHeader('X-SMMR-Proxy', 'vercel-api');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
@@ -20,6 +21,14 @@ module.exports = async function handler(req, res) {
   const path = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path;
   const cleanPath = String(path || '').replace(/^api(?:\/|$)/, '');
   const target = new URL(`/${cleanPath}`, backendUrl);
+
+  if (req.query.debug_proxy === '1') {
+    res.status(200).json({
+      method: req.method,
+      target: target.toString(),
+    });
+    return;
+  }
 
   for (const [key, value] of Object.entries(req.query)) {
     if (key !== 'path') {
