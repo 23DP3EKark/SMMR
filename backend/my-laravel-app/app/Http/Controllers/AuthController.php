@@ -24,7 +24,7 @@ class AuthController extends Controller
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
-            'password_hash' => $validated['password'],
+            'password_hash' => Hash::make($validated['password']),
         ]);
 
         return response()->json([
@@ -101,7 +101,7 @@ class AuthController extends Controller
         }
 
         $user->update([
-            'password_hash' => $validated['password'],
+            'password_hash' => Hash::make($validated['password']),
         ]);
 
         return response()->json([

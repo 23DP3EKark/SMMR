@@ -82,7 +82,7 @@ const register = async () => {
   errorMessage.value = '';
 
   try {
-    const response = await axios.post('/api/register', user.value);
+    const response = await axios.post('/register', user.value);
     successMessage.value = response.data.message ?? 'Registration successful.';
 
     setTimeout(() => {
