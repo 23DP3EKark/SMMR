@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const backendUrl = (process.env.BACKEND_URL || process.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+  const backendUrl = (process.env.BACKEND_URL || '').replace(/\/+$/, '');
 
   if (!backendUrl) {
     res.status(500).json({
@@ -18,9 +18,19 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const path = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path;
-  const cleanPath = String(path || '').replace(/^api(?:\/|$)/, '');
+  const path = Array.isArray(req.query.path)
+    ? req.query.path.join('/')
+    : req.query.path || '';
+
+  const cleanPath = String(path).replace(/^\/+/, '').replace(/^api\/?/, '');
+
   const target = new URL(`/api/${cleanPath}`, backendUrl);
+
+  for (const [key, value] of Object.entries(req.query)) {
+    if (key !== 'path') {
+      target.searchParams.append(key, value);
+    }
+  }
 
   if (req.query.debug_proxy === '1') {
     res.status(200).json({
@@ -28,12 +38,6 @@ module.exports = async function handler(req, res) {
       target: target.toString(),
     });
     return;
-  }
-
-  for (const [key, value] of Object.entries(req.query)) {
-    if (key !== 'path') {
-      target.searchParams.append(key, value);
-    }
   }
 
   const headers = {
@@ -49,47 +53,30 @@ module.exports = async function handler(req, res) {
     headers.Cookie = req.headers.cookie;
   }
 
-  let response;
-
   try {
-    response = await fetch(target, {
+    const response = await fetch(target, {
       method: req.method,
       headers,
-      body: ['GET', 'HEAD'].includes(req.method) ? undefined : serializeBody(req.body),
+      body: ['GET', 'HEAD'].includes(req.method)
+        ? undefined
+        : serializeBody(req.body),
     });
+
+    const contentType = response.headers.get('content-type');
+
+    if (contentType) {
+      res.setHeader('Content-Type', contentType);
+    }
+
+    const responseBody = Buffer.from(await response.arrayBuffer());
+    res.status(response.status).send(responseBody);
   } catch (error) {
     res.status(502).json({
       message: 'Vercel could not reach the Railway backend.',
-      target: target.origin,
+      target: target.toString(),
       error: error.message,
     });
-    return;
   }
-
-  const contentType = response.headers.get('content-type');
-  const setCookie = response.headers.get('set-cookie');
-
-  if (contentType) {
-    res.setHeader('Content-Type', contentType);
-  }
-
-  if (setCookie) {
-    res.setHeader('Set-Cookie', setCookie);
-  }
-
-  const responseBody = Buffer.from(await response.arrayBuffer());
-
-  if (!contentType && response.status >= 500) {
-    res.status(response.status).json({
-      message: 'Railway backend returned an error without a JSON body.',
-      status: response.status,
-      target: target.toString(),
-      body: responseBody.toString('utf8').slice(0, 500),
-    });
-    return;
-  }
-
-  res.status(response.status).send(responseBody);
 };
 
 function serializeBody(body) {
