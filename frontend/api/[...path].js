@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
 
   const path = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path;
   const cleanPath = String(path || '').replace(/^api(?:\/|$)/, '');
-  const target = new URL(`/${cleanPath}`, backendUrl);
+  const target = new URL(`/api/${cleanPath}`, backendUrl);
 
   if (req.query.debug_proxy === '1') {
     res.status(200).json({
