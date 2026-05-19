@@ -25,7 +25,7 @@
     "zlib1g-dev"
   ],
   "deploy": {
-    "preDeployCommand": "php artisan migrate --force",
-    "startCommand": "php artisan serve --host=0.0.0.0 --port=$PORT"
+    "preDeployCommand": "php artisan config:clear && php artisan migrate --force",
+    "startCommand": "php artisan config:clear && php artisan serve --host=0.0.0.0 --port=$PORT"
   }
 }
