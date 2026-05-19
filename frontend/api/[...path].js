@@ -49,11 +49,22 @@ module.exports = async function handler(req, res) {
     headers.Cookie = req.headers.cookie;
   }
 
-  const response = await fetch(target, {
-    method: req.method,
-    headers,
-    body: ['GET', 'HEAD'].includes(req.method) ? undefined : serializeBody(req.body),
-  });
+  let response;
+
+  try {
+    response = await fetch(target, {
+      method: req.method,
+      headers,
+      body: ['GET', 'HEAD'].includes(req.method) ? undefined : serializeBody(req.body),
+    });
+  } catch (error) {
+    res.status(502).json({
+      message: 'Vercel could not reach the Railway backend.',
+      target: target.origin,
+      error: error.message,
+    });
+    return;
+  }
 
   const contentType = response.headers.get('content-type');
   const setCookie = response.headers.get('set-cookie');
@@ -66,7 +77,19 @@ module.exports = async function handler(req, res) {
     res.setHeader('Set-Cookie', setCookie);
   }
 
-  res.status(response.status).send(Buffer.from(await response.arrayBuffer()));
+  const responseBody = Buffer.from(await response.arrayBuffer());
+
+  if (!contentType && response.status >= 500) {
+    res.status(response.status).json({
+      message: 'Railway backend returned an error without a JSON body.',
+      status: response.status,
+      target: target.toString(),
+      body: responseBody.toString('utf8').slice(0, 500),
+    });
+    return;
+  }
+
+  res.status(response.status).send(responseBody);
 };
 
 function serializeBody(body) {
