@@ -18,16 +18,30 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const path = Array.isArray(req.query.path)
-    ? req.query.path.join('/')
-    : req.query.path || '';
+  const rawPath =
+    req.query.path ??
+    req.query['...path'] ??
+    req.query.slug ??
+    '';
 
-  const cleanPath = String(path).replace(/^\/+/, '').replace(/^api\/?/, '');
+  const path = Array.isArray(rawPath) ? rawPath.join('/') : String(rawPath);
+
+  const cleanPath = path
+    .replace(/^\/+/, '')
+    .replace(/^api\/?/, '');
 
   const target = new URL(`/api/${cleanPath}`, backendUrl);
 
   for (const [key, value] of Object.entries(req.query)) {
-    if (key !== 'path') {
+    if (key === 'path' || key === '...path' || key === 'slug' || key === 'debug_proxy') {
+      continue;
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        target.searchParams.append(key, item);
+      }
+    } else {
       target.searchParams.append(key, value);
     }
   }
@@ -35,6 +49,8 @@ module.exports = async function handler(req, res) {
   if (req.query.debug_proxy === '1') {
     res.status(200).json({
       method: req.method,
+      rawPath,
+      cleanPath,
       target: target.toString(),
     });
     return;
@@ -47,6 +63,10 @@ module.exports = async function handler(req, res) {
 
   if (req.headers['content-type']) {
     headers['Content-Type'] = req.headers['content-type'];
+  }
+
+  if (req.headers.authorization) {
+    headers.Authorization = req.headers.authorization;
   }
 
   if (req.headers.cookie) {
