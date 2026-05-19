@@ -1,4 +1,8 @@
 module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -14,7 +18,8 @@ module.exports = async function handler(req, res) {
   }
 
   const path = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path;
-  const target = new URL(`/${path || ''}`, backendUrl);
+  const cleanPath = String(path || '').replace(/^api(?:\/|$)/, '');
+  const target = new URL(`/${cleanPath}`, backendUrl);
 
   for (const [key, value] of Object.entries(req.query)) {
     if (key !== 'path') {
