@@ -18,12 +18,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const rawPath =
-    req.query.path ??
-    req.query['...path'] ??
-    req.query.slug ??
-    '';
-
+  const rawPath = req.query.path || '';
   const path = Array.isArray(rawPath) ? rawPath.join('/') : String(rawPath);
 
   const cleanPath = path
@@ -33,7 +28,7 @@ module.exports = async function handler(req, res) {
   const target = new URL(`/api/${cleanPath}`, backendUrl);
 
   for (const [key, value] of Object.entries(req.query)) {
-    if (key === 'path' || key === '...path' || key === 'slug' || key === 'debug_proxy') {
+    if (key === 'path' || key === 'debug_proxy') {
       continue;
     }
 
@@ -88,7 +83,6 @@ module.exports = async function handler(req, res) {
       res.setHeader('Content-Type', contentType);
     }
 
-    // Important: forward Laravel session cookies from Railway to the browser
     const setCookies =
       typeof response.headers.getSetCookie === 'function'
         ? response.headers.getSetCookie()
