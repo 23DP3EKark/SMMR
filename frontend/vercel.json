@@ -1,5 +1,4 @@
 {
-  "_comment": "Trigger deployment commit.",
   "rewrites": [
     {
       "source": "/api/:path*",
